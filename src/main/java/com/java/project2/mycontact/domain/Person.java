@@ -1,4 +1,4 @@
-package com.java.project2.mycontact.domaion;
+package com.java.project2.mycontact.domain;
 
 
 import lombok.*;
@@ -6,11 +6,13 @@ import lombok.*;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.OneToOne;
 import java.time.LocalDate;
 
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
+@RequiredArgsConstructor
 @Data
 public class Person {
 
@@ -18,12 +20,15 @@ public class Person {
     @GeneratedValue
     private Long id;
 
+    @NonNull
     private String name;
 
+    @NonNull
     private Integer age;
 
     private String hobby;
 
+    @NonNull
     private String bloodType;
 
     private String address;
@@ -34,4 +39,7 @@ public class Person {
 
     @ToString.Exclude
     private String phoneNumber;
+
+    @OneToOne
+    private Block block;
 }
