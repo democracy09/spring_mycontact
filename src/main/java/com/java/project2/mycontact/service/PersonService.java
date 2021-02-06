@@ -16,17 +16,23 @@ import java.util.stream.Collectors;
 @Service
 @Slf4j
 public class PersonService {
-
+    
     @Autowired
     private PersonRepository personRepository;
     @Autowired
     private BlockRepository blockRepository;
 
     public List<Person> getPeopleExcludeBlocks(){
-        List<Person> people = personRepository.findAll();
 
-        return people.stream().filter(person -> person.getBlock() == null).collect(Collectors.toList());
+        return personRepository.findByBlockIsNull();
     }
+
+    public List<Person> getPeopleByName(String name){
+
+        return personRepository.findByName(name);
+    }
+
+
 
     @Transactional(readOnly = true)
     public Person getPerson(Long id){
@@ -36,4 +42,6 @@ public class PersonService {
 
         return person;
     }
+
+
 }
