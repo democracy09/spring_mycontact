@@ -23,7 +23,7 @@ class blockRepositoryTest {
     void crud(){
         Block block = new Block();
 
-        block.setName("dd");
+        block.setName("gg");
         block.setReason("justbecuz");
         block.setEndDate(LocalDate.now());
         block.setStartDate(LocalDate.now());
@@ -32,8 +32,9 @@ class blockRepositoryTest {
 
         List<Block> blocks = blockRepository.findAll();
 
-        assertThat(blocks.size()).isEqualTo(1);
-        assertThat(blocks.get(0).getName()).isEqualTo("dd");
+        assertThat(blocks.size()).isEqualTo(3);
+        assertThat(blocks.get(0).getName()).isEqualTo("fuck");
+        assertThat(blocks.get(1).getName()).isEqualTo("bb");
 
     }
 
