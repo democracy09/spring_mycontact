@@ -13,6 +13,7 @@ import javax.persistence.*;
 import javax.validation.Valid;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
+import java.time.LocalDate;
 
 @Entity
 @NoArgsConstructor
@@ -33,16 +34,7 @@ public class Person {
     @Column(nullable = false)
     private String name;
 
-    @NonNull
-    @Min(1)
-    private int age;
-
     private String hobby;
-
-    @NonNull
-    @NotEmpty
-    @Column(nullable = false)
-    private String bloodType;
 
     private String address;
 
@@ -52,27 +44,15 @@ public class Person {
 
     private String job;
 
-    @ToString.Exclude
     private String phoneNumber;
 
     @ColumnDefault("0")
     private boolean deleted;
 
-    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
-    @ToString.Exclude
-    private Block block;
-
     public void set(PersonDto personDto){
-        if(personDto.getAge() != 0){
-            this.setAge(personDto.getAge());
-        }
 
         if(personDto.getHobby()!=null){
             this.setHobby(personDto.getHobby());
-        }
-
-        if(personDto.getBloodType()!=null){
-            this.setBloodType(personDto.getBloodType());
         }
 
         if(personDto.getAddress()!=null){
@@ -86,5 +66,23 @@ public class Person {
         if(personDto.getPhoneNumber()!=null){
             this.setPhoneNumber(personDto.getPhoneNumber());
         }
+
+        if (personDto.getBirthday() != null) {
+            this.setBirthday(Birthday.of(personDto.getBirthday()));
+        }
+    }
+
+
+    public Integer getAge() {
+        if (this.birthday != null) {
+            return LocalDate.now().getYear() - this.birthday.getYearOfBirthday() + 1;
+        } else {
+            return null;
+        }
+    }
+
+
+    public boolean isBirthdayToday(){
+        return LocalDate.now().equals(LocalDate.of(this.birthday.getYearOfBirthday(), this.birthday.getMonthOfBirthday(), this.birthday.getDayOfBirthday()));
     }
 }

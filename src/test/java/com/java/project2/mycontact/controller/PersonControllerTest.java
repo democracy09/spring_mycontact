@@ -3,6 +3,7 @@ package com.java.project2.mycontact.controller;
 import com.java.project2.mycontact.repository.PersonRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -10,6 +11,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.transaction.annotation.Transactional;
 
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -17,6 +19,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest
 @Slf4j
+@Transactional
 class PersonControllerTest {
 
     @Autowired
@@ -47,9 +50,7 @@ class PersonControllerTest {
                 MockMvcRequestBuilders.post("/api/person?name=www&age=50&bloodType=A")
                         .contentType(MediaType.APPLICATION_JSON)
             .content("{\n" +
-                    "    \"name\": \"ww\",\n" +
-                    "    \"age\": 55,\n" +
-                    "    \"bloodType\": \"A\"\n" +
+                    "    \"name\": \"ww\"\n" +
                     "}"))
                 .andDo(print())
                 .andExpect(status().isCreated());
@@ -62,9 +63,7 @@ class PersonControllerTest {
                 MockMvcRequestBuilders.put("/api/person/1")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("{\n" +
-                                "    \"name\": \"aa\",\n" +
-                                "    \"age\": 55,\n" +
-                                "    \"bloodType\": \"A\"\n" +
+                                "    \"name\": \"aa\"\n" +
                                 "}"))
                 .andDo(print())
                 .andExpect(status().isOk());
@@ -81,6 +80,7 @@ class PersonControllerTest {
     }
 
     @Test
+    @Disabled
     void deletePerson() throws Exception{
         mockMvc.perform(
                 MockMvcRequestBuilders.delete("/api/person/1"))
