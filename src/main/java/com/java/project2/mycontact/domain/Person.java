@@ -1,9 +1,13 @@
 package com.java.project2.mycontact.domain;
 
 
+import com.java.project2.mycontact.controller.dto.PersonDto;
 import com.java.project2.mycontact.domain.dto.Birthday;
 import lombok.*;
 import lombok.experimental.Accessors;
+import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.annotations.Where;
+import org.springframework.util.StringUtils;
 
 import javax.persistence.*;
 import javax.validation.Valid;
@@ -17,6 +21,7 @@ import javax.validation.constraints.NotEmpty;
 @Data
 @Builder
 @Accessors(chain = true)
+@Where(clause = "deleted = false")
 public class Person {
 
     @Id
@@ -30,7 +35,7 @@ public class Person {
 
     @NonNull
     @Min(1)
-    private Integer age;
+    private int age;
 
     private String hobby;
 
@@ -50,7 +55,36 @@ public class Person {
     @ToString.Exclude
     private String phoneNumber;
 
+    @ColumnDefault("0")
+    private boolean deleted;
+
     @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
     @ToString.Exclude
     private Block block;
+
+    public void set(PersonDto personDto){
+        if(personDto.getAge() != 0){
+            this.setAge(personDto.getAge());
+        }
+
+        if(personDto.getHobby()!=null){
+            this.setHobby(personDto.getHobby());
+        }
+
+        if(personDto.getBloodType()!=null){
+            this.setBloodType(personDto.getBloodType());
+        }
+
+        if(personDto.getAddress()!=null){
+            this.setAddress(personDto.getAddress());
+        }
+
+        if(personDto.getJob()!=null){
+            this.setJob(personDto.getJob());
+        }
+
+        if(personDto.getPhoneNumber()!=null){
+            this.setPhoneNumber(personDto.getPhoneNumber());
+        }
+    }
 }

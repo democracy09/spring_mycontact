@@ -1,6 +1,7 @@
 package com.java.project2.mycontact.controller;
 
 
+import com.java.project2.mycontact.controller.dto.PersonDto;
 import com.java.project2.mycontact.domain.Person;
 import com.java.project2.mycontact.repository.PersonRepository;
 import com.java.project2.mycontact.service.PersonService;
@@ -33,9 +34,24 @@ public class PersonController {
     }
 
     @PutMapping("/{id}")
-    public void modifyPerson(@PathVariable Long id,@RequestBody Person person){
-        personService.modify(id, person);
+    public void modifyPerson(@PathVariable Long id,@RequestBody PersonDto personDto){
+        personService.modify(id, personDto);
 
+        log.info("person = {}", personRepository.findAll());
+    }
+
+    @PatchMapping("/{id}")
+    public void modifyPerson(@PathVariable Long id, String name){
+        personService.modify(id, name);
+
+        log.info("person = {}", personRepository.findAll());
+    }
+
+    @DeleteMapping("/{id}")
+    public void deletePerson(@PathVariable Long id){
+        personService.delete(id);
+
+        log.info("person = {}", personRepository.findAll());
     }
 
 }
