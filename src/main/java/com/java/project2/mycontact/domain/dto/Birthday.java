@@ -27,7 +27,7 @@ public class Birthday {
     }
 
     public static Birthday of(LocalDate birthday){
-        return new Birthday();
+        return new Birthday(birthday);
     }
 
 }
