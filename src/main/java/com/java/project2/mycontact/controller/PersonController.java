@@ -3,12 +3,18 @@ package com.java.project2.mycontact.controller;
 
 import com.java.project2.mycontact.controller.dto.PersonDto;
 import com.java.project2.mycontact.domain.Person;
+import com.java.project2.mycontact.exception.PersonNotFoundException;
+import com.java.project2.mycontact.exception.RenameNotPermittedException;
+import com.java.project2.mycontact.exception.dto.ErrorResponse;
 import com.java.project2.mycontact.repository.PersonRepository;
 import com.java.project2.mycontact.service.PersonService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
 
 @RequestMapping("/api/person")
 @RestController
@@ -17,8 +23,6 @@ public class PersonController {
 
     @Autowired
     private PersonService personService;
-    @Autowired
-    private PersonRepository personRepository;
 
     @GetMapping("/{id}")
     public Person getPerson(@PathVariable Long id){
@@ -27,20 +31,18 @@ public class PersonController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public void postPerson(@RequestBody PersonDto personDto){
+    public void postPerson(@RequestBody @Valid PersonDto personDto){
         personService.put(personDto);
     }
 
     @PutMapping("/{id}")
     public void modifyPerson(@PathVariable Long id,@RequestBody PersonDto personDto){
-        personService.modify(id, personDto);
-
+            personService.modify(id, personDto);
     }
 
     @PatchMapping("/{id}")
     public void modifyPerson(@PathVariable Long id, String name){
         personService.modify(id, name);
-
     }
 
     @DeleteMapping("/{id}")
@@ -48,5 +50,7 @@ public class PersonController {
         personService.delete(id);
 
     }
+
+
 
 }

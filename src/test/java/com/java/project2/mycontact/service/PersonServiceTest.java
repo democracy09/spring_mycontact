@@ -2,6 +2,8 @@ package com.java.project2.mycontact.service;
 
 import com.java.project2.mycontact.controller.dto.PersonDto;
 import com.java.project2.mycontact.domain.Person;
+import com.java.project2.mycontact.exception.PersonNotFoundException;
+import com.java.project2.mycontact.exception.RenameNotPermittedException;
 import com.java.project2.mycontact.repository.PersonRepository;
 import org.assertj.core.util.Lists;
 import org.junit.jupiter.api.Test;
@@ -17,7 +19,6 @@ import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -70,7 +71,7 @@ class PersonServiceTest {
         when(personRepository.findById(1L))
                 .thenReturn(Optional.empty());
 
-        assertThrows(RuntimeException.class, () -> personService.modify(1L, mockPersonDto()));
+        assertThrows(PersonNotFoundException.class, () -> personService.modify(1L, mockPersonDto()));
     }
 
     @Test
@@ -78,7 +79,7 @@ class PersonServiceTest {
         when(personRepository.findById(1L))
                 .thenReturn(Optional.of(new Person("bb")));
 
-        assertThrows(RuntimeException.class, () ->personService.modify(1L, mockPersonDto()));
+        assertThrows(RenameNotPermittedException.class, () ->personService.modify(1L, mockPersonDto()));
     }
 
     @Test
@@ -88,7 +89,6 @@ class PersonServiceTest {
 
         personService.modify(1L, mockPersonDto());
 
-//        verify(personRepository, times(1)).save(any(Person.class));
         verify(personRepository, times(1)).save(argThat(new IsPersonWillBeUpdated()));
     }
 
@@ -97,7 +97,7 @@ class PersonServiceTest {
         when(personRepository.findById(1L))
             .thenReturn(Optional.empty());
 
-        assertThrows(RuntimeException.class, () -> personService.modify(1L, "bb"));
+        assertThrows(PersonNotFoundException.class, () -> personService.modify(1L, "bb"));
     }
 
     @Test
@@ -115,7 +115,7 @@ class PersonServiceTest {
         when(personRepository.findById(1L))
                 .thenReturn(Optional.empty());
 
-        assertThrows(RuntimeException.class, () -> personService.delete(1L));
+        assertThrows(PersonNotFoundException.class, () -> personService.delete(1L));
     }
 
     @Test
